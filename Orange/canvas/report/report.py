@@ -256,7 +256,7 @@ class Report:
         else:
             body = None
         if body:
-            self.report_html += "<table>\n" + body + "</table>"
+            self.report_html += "<table border = '1px' style = 'border-collapse:collapse'>\n" + body + "</table>"
 
     # noinspection PyBroadException
     def report_list(self, name, data=None, limit=1000):
