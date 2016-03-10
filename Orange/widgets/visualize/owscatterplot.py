@@ -21,7 +21,7 @@ from Orange.widgets.settings import \
 from Orange.widgets.utils.toolbar import ZoomSelectToolbar
 from Orange.widgets.visualize.owscatterplotgraph import OWScatterPlotGraph
 from Orange.widgets.widget import OWWidget, Default, AttributeList
-
+from Orange.statistics.basic_stats import BasicStats 
 
 def font_resize(font, factor, minsize=None, maxsize=None):
     font = QtGui.QFont(font)
@@ -380,8 +380,14 @@ class OWScatterPlot(OWWidget):
         self.graph.zoomStack = []
         if attributes and len(attributes) == 2:
             self.attr_x, self.attr_y = attributes
+        X = BasicStats(self.data[:, self.attr_x], self.attr_x)
+        Y = BasicStats(self.data[:, self.attr_y], self.attr_y)
+        if X.nans or Y.nans:
+            self.warning("Some attributes contain missing values") 
+        else:
+             self.warning()      
         if not self.graph.have_data:
-            return
+            return    
         self.graph.update_data(self.attr_x, self.attr_y, reset_view)
 
     def selection_changed(self):
